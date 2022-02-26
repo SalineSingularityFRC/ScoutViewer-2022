@@ -1,0 +1,23 @@
+{
+    "version":             1.1,
+    "time":         1644076401,
+    "matchNum":              1,
+    "teamNum":            5066,
+    "isBlue":             true,
+    "startingPos":           1,
+  
+    "defensive":         false,
+    "defendedAgainst":   false,
+    "collisionWithAlly": false,
+    "failedHangar":      false,
+    "disconnection":     false,
+  
+   
+    "autoLowerHub":          5,
+    "autoUpperHub":          2,
+    "teleLowerHub":          5,
+    "teleUpperHub":         12,
+    "hanger":                3,
+    "finalScore":           59
+  }
+  

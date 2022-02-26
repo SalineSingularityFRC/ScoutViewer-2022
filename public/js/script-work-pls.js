@@ -1,31 +1,32 @@
-        //import json from '../5066.json'
         let data = [];
         let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
+      
+        let teamNames = ["5066", "5077"]
         //generate the data
         //data is an array of arrays of points (currently 3 arrays in data)
-        //console.log(json)
         let work = ""
-        fetch("../5066.json").then(async (resp) => {
+
+        fetch("../js/final.json").then(async (resp) => {
             const asObject = await resp.json();
-          
-            
+       
         
-        console.log(asObject["version"])
-        for (var i = 0; i < 1; i++){
+        for (var i = 0; i < teamNames.length; i++){
+            
             var point = {}
             for(var j = 0; j < features.length; j++){
-            features.forEach(f =>{
-                //console.log(f)
-                console.log(features[j])
-                point[features[j]] = asObject[features[j]]//value of point (currently random)
-    
+            
+          
+                document.getElementById("work").innerHTML = "<h1>" + asObject[0][teamNames[i]].teamNum + "</h1>"
+                point[features[j]] = asObject[0][teamNames[i]][features[j]]
+                
                
-           });
-        
             }
+          
             data.push(point);
+            
         }
-        console.log(data);
+    
+       // console.log(data);
 
         //define size of svg
         let svg = d3.select("body").append("svg")
@@ -108,7 +109,7 @@
         //make colorWithAlpha
        let opacity = Math.round(Math.min(Math.max((totalOpacity / data.length) || 1, 0), 1) * 255);
         let colorWithAlpha = color + opacity.toString(16).toUpperCase();
-        console.log(colorWithAlpha)
+        //console.log(colorWithAlpha)
 
         //make some lines from the data
         for (var i = 0; i < data.length; i ++){
@@ -122,5 +123,7 @@
             .attr("d", line)
             .attr("fill", "#" + colorWithAlpha)
             //.attr("opacity", totalOpacity/data.length);
+            await new Promise(r => setTimeout(r, 200));
         }
+       
     })
