@@ -1,3 +1,5 @@
+
+
         let data = [];
         let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
       
@@ -16,7 +18,7 @@
             for(var j = 0; j < features.length; j++){
             
           
-                document.getElementById("work").innerHTML = "<h1>" + asObject[0][teamNames[i]].teamNum + "</h1>"
+                
                 point[features[j]] = asObject[0][teamNames[i]][features[j]]
                 
                
@@ -26,10 +28,11 @@
             
         }
     
-       // console.log(data);
-
+       console.log(data);
+      
         //define size of svg
-        let svg = d3.select("body").append("svg")
+        let svg;
+        svg = d3.select("body").append("svg")
         .attr("width", 600)
         .attr("height", 600);
 
@@ -112,18 +115,30 @@
         //console.log(colorWithAlpha)
 
         //make some lines from the data
-        for (var i = 0; i < data.length; i ++){
+        //const datalen = data.length
+        
+        for (var i = 0; i < data.length; i++){
+           
+            document.getElementById("work").innerHTML = "<h1>" + asObject[0][teamNames[i]].teamNum + "</h1>"
             let d = data[i];
             let coordinates = getPathCoordinates(d);
 
             //draw the path element
+          
             svg
             .append("path")
             .datum(coordinates)
             .attr("d", line)
             .attr("fill", "#" + colorWithAlpha)
-            //.attr("opacity", totalOpacity/data.length);
-            await new Promise(r => setTimeout(r, 200));
+          
+        
+           
+           
+            //svg = d3.select("body").append("svg")
+           // d3.select("body").select("svg").select("path").remove()
+            await new Promise(r => setTimeout(r, 500));
+            
         }
-       
+
+     
     })
