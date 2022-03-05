@@ -7,133 +7,93 @@ let teleUpperHub = 4;
 let hanger = 5;
 
 fetch("../js/final.json").then(async (resp) => {
-    let response = await resp.json();
-    for(var i = 0; i < response.length; i++){
-    document.getElementById("work").innerHTML += `<h1> ${response[i][1][teamNum]} </h1>`
-   
-    }
-
-/*
-    //for(var i = 0; i < response.length; i++){
-        var margin = {top: 20, right: 160, bottom: 35, left: 30};
-
-        var width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-        var dataset = d3.layout.stack()([response[i][1][autoLowerHub], response[i][autoUpperHub], response[i][1][autoLowerHub], response[i][1][hanger]].map(function(fruit) {
-            return data.map(function(d) {
-              return {x: response[i][0], y: +d[fruit]};
-            });
-          }));       
-        var svg = d3.select("body")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            
-        var x = d3.scale.ordinal()
-            .domain(dataset[i].map(function(d) { return d.x; }))
-            .rangeRoundBands([10, width-10], 0.02);
-
-        var y = d3.scale.linear()
-            .domain([0, d3.max(dataset, function(d) {  return d3.max(d, function(d) { return d.y0 + d.y; });  })])
-            .range([height, 0]);
-
-        var colors = ["b33040", "#d25c4d", "#f2b447", "#d9d574"];
+let response = await resp.json();
+//ARRAYS DECLARED & INITALIZED
+let labelsArray = []
+let autoLowerHubArray = []
+let autoUpperHubArray = []
+let teleLowerHubArray = []
+let teleUpperHubArray = [];
+let hangerArray = []
 
 
-        // Define and draw axes
-        var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(5)
-        .tickSize(-width, 0, 0)
-        .tickFormat( function(d) { return d } );
-
-        var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .tickFormat(d3.time.format("%Y"));
-
-        svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-
-        svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-
-        // Create groups for each series, rects for each segment 
-        var groups = svg.selectAll("g.cost")
-        .data(dataset)
-        .enter().append("g")
-        .attr("class", "cost")
-        .style("fill", function(d, i) { return colors[i]; });
-
-        var rect = groups.selectAll("rect")
-        .data(function(d) { return d; })
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return x(d.x); })
-        .attr("y", function(d) { return y(d.y0 + d.y); })
-        .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
-        .attr("width", x.rangeBand())
-        .on("mouseover", function() { tooltip.style("display", null); })
-        .on("mouseout", function() { tooltip.style("display", "none"); })
-        .on("mousemove", function(d) {
-            var xPosition = d3.mouse(this)[0] - 15;
-            var yPosition = d3.mouse(this)[1] - 25;
-            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-            tooltip.select("text").text(d.y);
-        });
+//LABEL FOR LOOP
+for(var i = 0; i < response.length; i++){
+    labelsArray.push(response[i][1][teamNum])
+}
+//autoLowerHubArray
+for(var i = 0; i < response.length; i++){
+    autoLowerHubArray.push(response[i][1][autoLowerHub])
+}
+//autoUpperHub
+for(var i = 0; i < response.length; i++){
+    autoUpperHubArray.push(response[i][1][autoUpperHub])
+}
+//teleLowerHubArray
+for(var i = 0; i < response.length; i++){
+    teleLowerHubArray.push(response[i][1][teleLowerHub])
+}
+//teleUpperHubArray
+for(var i = 0; i < response.length; i++){
+    teleUpperHubArray.push(response[i][1][teleUpperHub])
+}
+//hangerArray
+for(var i = 0; i < response.length; i++){
+    hangerArray.push(response[i][1][hanger])
+}
 
 
-        // Draw legend
-        var legend = svg.selectAll(".legend")
-        .data(colors)
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
-        
-        legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", function(d, i) {return colors.slice().reverse()[i];});
-        
-        legend.append("text")
-        .attr("x", width + 5)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
-        .text(function(d, i) { 
-            switch (i) {
-            case 0: return "Anjou pears";
-            case 1: return "Naval oranges";
-            case 2: return "McIntosh apples";
-            case 3: return "Red Delicious apples";
-            }
-        });
+
+for(var i = 0; i < response.length; i++){
+    var ctx = document.getElementById('chart');
+
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labelsArray,
+        datasets: [
+          {
+            label: 'autoLowerHub',
+            data: autoLowerHubArray,
+            backgroundColor: '#ffb400',
+          },
+          {
+            label: 'autoUpperHub',
+            data: autoUpperHubArray,
+            backgroundColor: '#a57c1b',
+          },
+          {
+            label: 'teleLowerHub',
+            data: teleLowerHubArray,
+            backgroundColor: '#363445',
+          },
+          {
+            label: 'teleUpperHub',
+            data: teleUpperHubArray,
+            backgroundColor: '#48446e',
+          },
+          {
+            label: 'hanger',
+            data: hangerArray,
+            backgroundColor: '#5e569b',
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [{ stacked: true }],
+          yAxes: [{ stacked: true }],
+        animation: {
+            duration: 0, // general animation time
+        },
+        hover: {
+            animationDuration: 0, // duration of animations when hovering an item
+        },
+        responsiveAnimationDuration: 0, 
+        }
+      }
+    });
+}
 
 
-        // Prep the tooltip bits, initial display is hidden
-        var tooltip = svg.append("g")
-        .attr("class", "tooltip")
-        .style("display", "none");
-            
-        tooltip.append("rect")
-        .attr("width", 30)
-        .attr("height", 20)
-        .attr("fill", "white")
-        .style("opacity", 0.5);
-
-        tooltip.append("text")
-        .attr("x", 15)
-        .attr("dy", "1.2em")
-        .style("text-anchor", "middle")
-        .attr("font-size", "12px")
-        .attr("font-weight", "bold");  
-    //}*/
 })
