@@ -3,41 +3,44 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 const fs = require("fs")
-const util = require("util")
+const util = require("util");
 const home = "/public/home.html"
 
 app.use(express.static(path.join(__dirname + "/public")))
 
 
 
-
+//fs.writeFileSync(path.join(__dirname, '/public/js/final.json'), util.format("%j", data))
 
 //JSON CODEEEEEEEEEEEEEEEEEEEEEEE######################################
-const directoryPath = path.join(__dirname, '/public/json');
-fs.readdir(directoryPath, function (err, files) {
-if (err) {
-return console.log('Unable to scan directory: ' + err);
-} 
-const data = []
-let filedata = {};
+const directoryPath = path.join(__dirname, '/public/json/');
+let data = []
 
-  for(var i = 0; i< files.length; i++){
-
-    let teamName = String(files[i]).valueOf().split(".json").join("")
-    filedata[teamName] = JSON.parse(fs.readFileSync(path.join(__dirname, '/public/json/' + files[i])));
-   
-  }
-  data.push(filedata)  
-
-   try{
-  fs.writeFileSync(path.join(__dirname, '/public/js/final.json'), util.format("%j", data))
-  console.log("Success, JSON Data appended to final.json!")
-} catch (err) {
-  console.error(err)
-}
+//let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
 
 
-});
+fs.readdir(directoryPath, (err, files) => {
+  return new Promise((resolve, reject) => {
+      if (err) reject(err);
+      files.forEach(file => {
+        let features = []
+         console.log(file);
+         let content = require(`${directoryPath}${file}`);
+         let indexOf = file.indexOf(".json")
+         features.push(content.team)//0
+         features.push(content.autoLowerHub)//1
+         features.push(content.autoUpperHub)//2
+         features.push(content.teleLowerHub)//3
+         features.push(content.teleUpperHub)//4
+         features.push(content.hanger)//4
+         data.push([file.substring(0, indexOf), features])
+      });
+      resolve(data);
+  }).then(data => {
+      fs.writeFileSync(path.join(__dirname, '/public/js/final.json'), JSON.stringify(data));
+  });
+})
+
 
 
 //WEBSITE CODEEEEEEEEEE#######################################
@@ -46,6 +49,7 @@ let filedata = {};
 
 router.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/public/home.html'));
+   
   });
   
 

@@ -1,144 +1,139 @@
+let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
+let teamNum = 0;
+let autoLowerHub = 1;
+let autoUpperHub = 2;
+let teleLowerHub = 3;
+let teleUpperHub = 4;
+let hanger = 5;
+
+fetch("../js/final.json").then(async (resp) => {
+    let response = await resp.json();
+    for(var i = 0; i < response.length; i++){
+    document.getElementById("work").innerHTML += `<h1> ${response[i][1][teamNum]} </h1>`
+   
+    }
+
+/*
+    //for(var i = 0; i < response.length; i++){
+        var margin = {top: 20, right: 160, bottom: 35, left: 30};
+
+        var width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+        var dataset = d3.layout.stack()([response[i][1][autoLowerHub], response[i][autoUpperHub], response[i][1][autoLowerHub], response[i][1][hanger]].map(function(fruit) {
+            return data.map(function(d) {
+              return {x: response[i][0], y: +d[fruit]};
+            });
+          }));       
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            
+        var x = d3.scale.ordinal()
+            .domain(dataset[i].map(function(d) { return d.x; }))
+            .rangeRoundBands([10, width-10], 0.02);
+
+        var y = d3.scale.linear()
+            .domain([0, d3.max(dataset, function(d) {  return d3.max(d, function(d) { return d.y0 + d.y; });  })])
+            .range([height, 0]);
+
+        var colors = ["b33040", "#d25c4d", "#f2b447", "#d9d574"];
 
 
-        let data = [];
-        let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
-      
-        let teamNames = ["5066", "5077"]
-        //generate the data
-        //data is an array of arrays of points (currently 3 arrays in data)
-        let work = ""
+        // Define and draw axes
+        var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(5)
+        .tickSize(-width, 0, 0)
+        .tickFormat( function(d) { return d } );
 
-        fetch("../js/final.json").then(async (resp) => {
-            const asObject = await resp.json();
-       
+        var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .tickFormat(d3.time.format("%Y"));
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+        svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+
+        // Create groups for each series, rects for each segment 
+        var groups = svg.selectAll("g.cost")
+        .data(dataset)
+        .enter().append("g")
+        .attr("class", "cost")
+        .style("fill", function(d, i) { return colors[i]; });
+
+        var rect = groups.selectAll("rect")
+        .data(function(d) { return d; })
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.x); })
+        .attr("y", function(d) { return y(d.y0 + d.y); })
+        .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
+        .attr("width", x.rangeBand())
+        .on("mouseover", function() { tooltip.style("display", null); })
+        .on("mouseout", function() { tooltip.style("display", "none"); })
+        .on("mousemove", function(d) {
+            var xPosition = d3.mouse(this)[0] - 15;
+            var yPosition = d3.mouse(this)[1] - 25;
+            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+            tooltip.select("text").text(d.y);
+        });
+
+
+        // Draw legend
+        var legend = svg.selectAll(".legend")
+        .data(colors)
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
         
-        for (var i = 0; i < teamNames.length; i++){
-            
-            var point = {}
-            for(var j = 0; j < features.length; j++){
-            
-          
-                
-                point[features[j]] = asObject[0][teamNames[i]][features[j]]
-                
-               
-            }
-          
-            data.push(point);
-            
-        }
-    
-       console.log(data);
-      
-        //define size of svg
-        let svg;
-        svg = d3.select("body").append("svg")
-        .attr("width", 600)
-        .attr("height", 600);
-
-        //plot gridlines
-        let radialScale = d3.scaleLinear()
-        .domain([0,10])
-        .range([0,250]);
-        let ticks = [2,4,6,8,10];
-
-        //add circles
-        ticks.forEach(t =>
-            svg.append("circle")
-            .attr("cx", 300)
-            .attr("cy", 300)
-            .attr("fill", "none")
-            .attr("stroke", "gray")
-            .attr("r", radialScale(t))
-        );
-
-        //add numbers
-        ticks.forEach(t =>
-            svg.append("text")
-            .attr("x", 305)
-            .attr("y", 300 - radialScale(t))
-            .text(t.toString())
-        );
-
-        //just some trig to get coords
-        function angleToCoordinate(angle, value){
-            let x = Math.cos(angle) * radialScale(value);
-            let y = Math.sin(angle) * radialScale(value);
-            return {"x": 300 + x, "y": 300 - y};
-        }
-
-        //plot radial lines
-        for (var i = 0; i < features.length; i++) {
-            let ft_name = features[i];
-            let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
-            let line_coordinate = angleToCoordinate(angle, 10);
-            let label_coordinate = angleToCoordinate(angle, 10.5);
-
-            //draw axis line
-            svg.append("line")
-                .attr("x1", 300)
-                .attr("y1", 300)
-                .attr("x2", line_coordinate.x)
-                .attr("y2", line_coordinate.y)
-                .attr("stroke","black");
-
-                //draw axis label
-                svg.append("text")
-                .attr("x", label_coordinate.x)
-                .attr("y", label_coordinate.y)
-                .text(ft_name);
-            }
-
-            //define the color used
-            let line = d3.line()
-                .x(d => d.x)
-                .y(d => d.y);
-                const curve = d3.line().curve(d3.curveNatural);
-
-            //more coord calculation
-            function getPathCoordinates(data_point){
-            let coordinates = [];
-            for (var i = 0; i < features.length; i++){
-                let ft_name = features[i];
-                let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
-                coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
-            }
-            return coordinates;
-        }
-
-        let totalOpacity = .5 //anything over 1 will make multiple shapes opaque
-        let color = "6495ED"
-
-        //make colorWithAlpha
-       let opacity = Math.round(Math.min(Math.max((totalOpacity / data.length) || 1, 0), 1) * 255);
-        let colorWithAlpha = color + opacity.toString(16).toUpperCase();
-        //console.log(colorWithAlpha)
-
-        //make some lines from the data
-        //const datalen = data.length
+        legend.append("rect")
+        .attr("x", width - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d, i) {return colors.slice().reverse()[i];});
         
-        for (var i = 0; i < data.length; i++){
-           
-            document.getElementById("work").innerHTML = "<h1>" + asObject[0][teamNames[i]].teamNum + "</h1>"
-            let d = data[i];
-            let coordinates = getPathCoordinates(d);
+        legend.append("text")
+        .attr("x", width + 5)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text(function(d, i) { 
+            switch (i) {
+            case 0: return "Anjou pears";
+            case 1: return "Naval oranges";
+            case 2: return "McIntosh apples";
+            case 3: return "Red Delicious apples";
+            }
+        });
 
-            //draw the path element
-          
-            svg
-            .append("path")
-            .datum(coordinates)
-            .attr("d", line)
-            .attr("fill", "#" + colorWithAlpha)
-          
-        
-           
-           
-            //svg = d3.select("body").append("svg")
-           // d3.select("body").select("svg").select("path").remove()
-            await new Promise(r => setTimeout(r, 500));
+
+        // Prep the tooltip bits, initial display is hidden
+        var tooltip = svg.append("g")
+        .attr("class", "tooltip")
+        .style("display", "none");
             
-        }
+        tooltip.append("rect")
+        .attr("width", 30)
+        .attr("height", 20)
+        .attr("fill", "white")
+        .style("opacity", 0.5);
 
-     
-    })
+        tooltip.append("text")
+        .attr("x", 15)
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold");  
+    //}*/
+})
