@@ -1,3 +1,14 @@
+//FINAL CONSTANTS
+const autoLowerHubScore = 2;
+const autoUpperHubScore = 4;
+const teleLowerHubScore = 1;
+const teleUpperHubScore = 2;
+const hangerScore = [0, 4, 6, 10, 15]
+const taxiScore = 2;
+
+
+
+
 let features = ["autoLowerHub","autoUpperHub","teleLowerHub","teleUpperHub","hanger"];
 let teamNum = 0;
 let autoLowerHub = 1;
@@ -5,6 +16,9 @@ let autoUpperHub = 2;
 let teleLowerHub = 3;
 let teleUpperHub = 4;
 let hanger = 5;
+let taxi = 6;
+let counter = 7;
+
 
 fetch("../js/final.json").then(async (resp) => {
 let response = await resp.json();
@@ -15,36 +29,72 @@ let autoUpperHubArray = []
 let teleLowerHubArray = []
 let teleUpperHubArray = [];
 let hangerArray = []
-
+let taxiArray = []
 
 //LABEL FOR LOOP
+var counterArray = [];
 for(var i = 0; i < response.length; i++){
-    labelsArray.push(response[i][1][teamNum])
+  console.log(response[i][1][taxi])
+  //LabelArray
+
+for(var j = 0; j < labelsArray.length; j++){
+
+  if(labelsArray[j] == response[i][1][teamNum]){
+    response[i][1][autoLowerHub] += autoLowerHubArray[j];
+    response[i][1][autoUpperHub] += autoUpperHubArray[j]
+    response[i][1][teleLowerHub] += teleLowerHubArray[j]
+    response[i][1][teleUpperHub] += teleUpperHubArray[j]  
+    response[i][1][hanger] += hangerArray[j];
+    response[i][1][taxi] += taxiArray[j];
+    response[i][1][counter] += counterArray[j];
+
+    
+    autoLowerHubArray.splice(j,1)
+    autoUpperHubArray.splice(j,1)
+    teleLowerHubArray.splice(j,1)
+    teleUpperHubArray.splice(j,1)
+    counterArray.splice(j,1)
+    hangerArray.splice(j,1)
+    taxiArray.splice(j,1)
+    labelsArray.splice(j,1);
+ } 
 }
-//autoLowerHubArray
-for(var i = 0; i < response.length; i++){
+    labelsArray.push(response[i][1][teamNum]) 
+    //autoLowerHubArray
     autoLowerHubArray.push(response[i][1][autoLowerHub])
-}
-//autoUpperHub
-for(var i = 0; i < response.length; i++){
+    
+     //autoUpperHub
     autoUpperHubArray.push(response[i][1][autoUpperHub])
-}
-//teleLowerHubArray
-for(var i = 0; i < response.length; i++){
+     
+     //teleLowerHubArray
+     
     teleLowerHubArray.push(response[i][1][teleLowerHub])
-}
-//teleUpperHubArray
-for(var i = 0; i < response.length; i++){
+     
+     //teleUpperHubArray
+     
     teleUpperHubArray.push(response[i][1][teleUpperHub])
-}
-//hangerArray
-for(var i = 0; i < response.length; i++){
+     
+     //hangerArray
     hangerArray.push(response[i][1][hanger])
+
+    taxiArray.push(response[i][1][taxi])
+
+    counterArray.push(response[i][1][counter])
 }
 
+console.log(taxiArray)
+for(var k = 0; k < labelsArray.length; k++){
 
+autoLowerHubArray[k] = (autoLowerHubArray[k]/counterArray[k]) *autoLowerHubScore;
+autoUpperHubArray[k] = (autoUpperHubArray[k]/counterArray[k]) * autoLowerHubScore;
+teleLowerHubArray[k] = (teleLowerHubArray[k]/counterArray[k]) * teleLowerHubScore;
+teleUpperHubArray[k] = (teleUpperHubArray[k]/counterArray[k]) * teleUpperHubScore;
+taxiArray[k] = (taxiArray[k]/counterArray[k]) * taxiScore;
 
-for(var i = 0; i < response.length; i++){
+//TODO: ADD HANGER SCORE
+hangerArray[k] = (hangerArray[k]/counterArray[k]); 
+}
+
     var ctx = document.getElementById('chart');
 
     var myChart = new Chart(ctx, {
@@ -76,6 +126,11 @@ for(var i = 0; i < response.length; i++){
             label: 'hanger',
             data: hangerArray,
             backgroundColor: '#5e569b',
+          },
+          {
+            label: 'taxi',
+            data: taxiArray,
+            backgroundColor: '#9080ff',
           }
         ]
       },
@@ -93,7 +148,6 @@ for(var i = 0; i < response.length; i++){
         }
       }
     });
-}
 
 
 })
