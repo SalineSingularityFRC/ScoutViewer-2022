@@ -90,9 +90,7 @@ autoUpperHubArray[k] = (autoUpperHubArray[k]/counterArray[k]) * autoLowerHubScor
 teleLowerHubArray[k] = (teleLowerHubArray[k]/counterArray[k]) * teleLowerHubScore;
 teleUpperHubArray[k] = (teleUpperHubArray[k]/counterArray[k]) * teleUpperHubScore;
 taxiArray[k] = (taxiArray[k]/counterArray[k]) * taxiScore;
-
-//TODO: ADD HANGER SCORE
-hangerArray[k] = (hangerArray[k]/counterArray[k]); 
+hangerArray[k] = (hangerScore[hangerArray[k]]/counterArray[k]); 
 }
 
     var ctx = document.getElementById('chart');
