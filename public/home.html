@@ -1,12 +1,22 @@
 <html>
     <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+
     <body>
-    
+      <style>
+        .chart {
+            height:fit-content;
+            width: 100%;
+        } 
+        html { height:100%; }
+        body { position:absolute; top:0; bottom:0; right:0; left:0; }
+      </style>
+      <div class="chart">
         <canvas id="chart"></canvas>
         <script  type="module"   src="js/script-work-pls.js">
         
         </script>
+      </div>
     </body>
    
 </html>
