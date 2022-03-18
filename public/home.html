@@ -4,18 +4,27 @@
 
     <body>
       <style>
-        .chart {
-            height:fit-content;
-            width: 100%;
-        } 
-        html { height:100%; }
-        body { position:absolute; top:0; bottom:0; right:0; left:0; }
+        html {
+    width: 100%;
+    height: 100%;
+    display: table;
+}
+
+body {
+    width: 100%;
+    display: table-cell;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
       </style>
       <div class="chart">
-        <canvas id="chart"></canvas>
-        <script  type="module"   src="js/script-work-pls.js">
+        <canvas id="chart">
+        <script  type="module" src="js/script-work-pls.js"></script>
+        </canvas>
         
-        </script>
       </div>
     </body>
    

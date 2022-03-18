@@ -96,6 +96,7 @@ hangerArray[k] = (hangerScore[hangerArray[k]]/counterArray[k]);
     var ctx = document.getElementById('chart');
 
     var myChart = new Chart(ctx, {
+      maintainAspectRatio: false,
       type: 'bar',
       data: {
         labels: labelsArray,
