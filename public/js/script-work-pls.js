@@ -134,6 +134,7 @@ hangerArray[k] = (hangerScore[hangerArray[k]]/counterArray[k]);
         ]
       },
       options: {
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{ stacked: true }],
           yAxes: [{ stacked: true }],
