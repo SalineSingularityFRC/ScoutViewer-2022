@@ -34,7 +34,6 @@ let taxiArray = []
 //LABEL FOR LOOP
 var counterArray = [];
 for(var i = 0; i < response.length; i++){
-  console.log(response[i][1][taxi])
   //LabelArray
 
 for(var j = 0; j < labelsArray.length; j++){
@@ -82,21 +81,28 @@ for(var j = 0; j < labelsArray.length; j++){
     counterArray.push(response[i][1][counter])
 }
 
-console.log(taxiArray)
-for(var k = 0; k < labelsArray.length; k++){
 
+for(var k = 0; k < labelsArray.length; k++){
+let hangerfix = hangerArray[k] / counterArray[k];
+
+if(hangerfix > 4) hangerfix = 5;
+else if(hangerfix > 3) hangerfix = 4;
+else if(hangerfix > 2) hangerfix = 3;
+else if(hangerfix > 1) hangerfix = 2;
+else if(hangerfix > 0) hangerfix = 1;
+else hangerfix = 0;
 autoLowerHubArray[k] = (autoLowerHubArray[k]/counterArray[k]) *autoLowerHubScore;
 autoUpperHubArray[k] = (autoUpperHubArray[k]/counterArray[k]) * autoLowerHubScore;
 teleLowerHubArray[k] = (teleLowerHubArray[k]/counterArray[k]) * teleLowerHubScore;
 teleUpperHubArray[k] = (teleUpperHubArray[k]/counterArray[k]) * teleUpperHubScore;
 taxiArray[k] = (taxiArray[k]/counterArray[k]) * taxiScore;
-hangerArray[k] = (hangerScore[hangerArray[k]]/counterArray[k]); 
+hangerArray[k] = hangerScore[hangerfix]; 
 }
 
     var ctx = document.getElementById('chart');
 
     var myChart = new Chart(ctx, {
-      maintainAspectRatio: false,
+      height: 500,
       type: 'bar',
       data: {
         labels: labelsArray,
