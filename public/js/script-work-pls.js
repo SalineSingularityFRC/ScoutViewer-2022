@@ -43,7 +43,7 @@ for(var j = 0; j < labelsArray.length; j++){
     response[i][1][autoUpperHub] += autoUpperHubArray[j]
     response[i][1][teleLowerHub] += teleLowerHubArray[j]
     response[i][1][teleUpperHub] += teleUpperHubArray[j]  
-    response[i][1][hanger] += hangerArray[j];
+    response[i][1][hanger] =  hangerScore[response[i][1][hanger]] + hangerArray[j];
     response[i][1][taxi] += taxiArray[j];
     response[i][1][counter] += counterArray[j];
 
@@ -83,20 +83,17 @@ for(var j = 0; j < labelsArray.length; j++){
 
 
 for(var k = 0; k < labelsArray.length; k++){
-let hangerfix = hangerArray[k] / counterArray[k];
-
-if(hangerfix > 4) hangerfix = 5;
-else if(hangerfix > 3) hangerfix = 4;
-else if(hangerfix > 2) hangerfix = 3;
-else if(hangerfix > 1) hangerfix = 2;
-else if(hangerfix > 0) hangerfix = 1;
-else hangerfix = 0;
+let hangerfix = 
 autoLowerHubArray[k] = (autoLowerHubArray[k]/counterArray[k]) *autoLowerHubScore;
 autoUpperHubArray[k] = (autoUpperHubArray[k]/counterArray[k]) * autoLowerHubScore;
 teleLowerHubArray[k] = (teleLowerHubArray[k]/counterArray[k]) * teleLowerHubScore;
 teleUpperHubArray[k] = (teleUpperHubArray[k]/counterArray[k]) * teleUpperHubScore;
 taxiArray[k] = (taxiArray[k]/counterArray[k]) * taxiScore;
-hangerArray[k] = hangerScore[hangerfix]; 
+//if(labelsArray[k] == "5066"){
+  console.log("hanger " + hangerArray[k]/counterArray[k])
+  //}
+hangerArray[k] = hangerArray[k] / counterArray[k];
+
 }
 
     var ctx = document.getElementById('chart');
