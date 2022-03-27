@@ -89,9 +89,6 @@ autoUpperHubArray[k] = (autoUpperHubArray[k]/counterArray[k]) * autoLowerHubScor
 teleLowerHubArray[k] = (teleLowerHubArray[k]/counterArray[k]) * teleLowerHubScore;
 teleUpperHubArray[k] = (teleUpperHubArray[k]/counterArray[k]) * teleUpperHubScore;
 taxiArray[k] = (taxiArray[k]/counterArray[k]) * taxiScore;
-//if(labelsArray[k] == "5066"){
-  console.log("hanger " + hangerArray[k]/counterArray[k])
-  //}
 hangerArray[k] = hangerArray[k] / counterArray[k];
 
 }
