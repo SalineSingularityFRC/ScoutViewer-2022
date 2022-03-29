@@ -28,6 +28,7 @@
     <script>
       
       function tdata(teamValue){
+
         fetch("../js/final.json").then(async (resp) => {
           const autoLowerHubScore = 2;
           const autoUpperHubScore = 4;
@@ -38,12 +39,10 @@
 
             let response = await resp.json();
             //ARRAYS DECLARED & INITALIZED
-            let labelsArray = []
             let autoLowerHubArray = []
             let autoUpperHubArray = []
             let teleLowerHubArray = []
             let teleUpperHubArray = [];
-            let hangerArray = []
             let taxiArray = []
             
             let teamNum = 0;
@@ -61,35 +60,55 @@
         
             let arrayHangerPercent = [];
            
-            for(var i = 0; i < response.length; i++){
+          for(var i = 0; i < response.length; i++){
               if(response[i][1][teamNum] == teamValue){
-              arrayHangerPercent.push(response[i][1][hanger])  
+                arrayHangerPercent.push(response[i][1][hanger])  
+                taxiArray.push(response[i][1][taxi])
+                teleUpperHubArray.push(response[i][1][teleUpperHub])
+                teleLowerHubArray.push(response[i][1][teleLowerHub])
+                autoUpperHubArray.push(response[i][1][autoUpperHub])
+                autoLowerHubArray.push(response[i][1][autoLowerHub])
             }
           }
             let matchCount = arrayHangerPercent.length;
-            console.log(arrayHangerPercent)
-            let finalteamdata = [];
             let hanger0 = 0;
             let hanger1 = 0;
             let hanger2 = 0;
             let hanger3 = 0;
             let hanger4 = 0;
-            if(arrayHangerPercent.length > 0){
+            let taxiavg = 0;
+            let autolowhubavg = 0;
+            let autoupperhubavg = 0;
+            let teleupperhubavg = 0;
+            let telelowerhubavg = 0;
 
-            for(var i = 0; i<matchCount-1; i++){
+            if(matchCount > 0){
+
+            for(var i = 0; i < matchCount-1; i++){
                 if(arrayHangerPercent[i] == 4) hanger4++;
-                else if(arrayHangerPercent[i] == 3) hanger3++;
-                else if(arrayHangerPercent[i] ==2 ) hanger2++
-                else if(arrayHangerPercent[i] == 1) hanger1++
-                else hanger0++;
+                  else if(arrayHangerPercent[i] == 3) hanger3++;
+                  else if(arrayHangerPercent[i] == 2 ) hanger2++
+                  else if(arrayHangerPercent[i] == 1) hanger1++
+                  else hanger0++;
+                
+                  taxiavg += taxiArray[i];
+                  autolowhubavg += autoLowerHubArray[i];
+                  autoupperhubavg += autoUpperHubArray[i];
+                  teleupperhubavg += teleUpperHubArray[i];
+                  telelowerhubavg += teleLowerHubArray[i];
             }
             document.getElementById("teamDataSet").innerHTML = " ";
-            document.getElementById("teamDataSet").innerHTML += "<br>Team #: " + response[i][1][teamNum] + " |  Total Competition Hanger Percentage <br> ";
+            document.getElementById("teamDataSet").innerHTML += "<br>Team #: " + teamValue + " |  Total Competition Averages <br> ";
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) None (#0): "  + (hanger0 / matchCount) * 100 + "%<br>"
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Low (#1): " + (hanger1 / matchCount) * 100 + "%<br>"
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Mid (#2): " + (hanger2 / matchCount) * 100 + "%<br>"
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) High (#3): " + (hanger3 / matchCount) * 100 + "%<br>"
-            document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Traversal (#4): " + (hanger4 / matchCount) * 100 + "%<br><br><br>"
+            document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Traversal (#4): " + (hanger4 / matchCount) * 100 + "%<br><br>"
+            document.getElementById("teamDataSet").innerHTML += "Taxi Average: " + (taxiavg / matchCount) + "<br>"
+            document.getElementById("teamDataSet").innerHTML += "Auto Upper Hub Average: " + (autoupperhubavg / matchCount) + "<br>"
+            document.getElementById("teamDataSet").innerHTML += "Auto Lower Hub Average: " + (autoupperhubavg / matchCount) + "<br>"
+            document.getElementById("teamDataSet").innerHTML += "Tele Upper Hub Average: " + (teleupperhubavg / matchCount) + "<br>"
+            document.getElementById("teamDataSet").innerHTML += "Tele Lower Hub Average: " + (telelowerhubavg / matchCount) + "<br><br><br>"
           } else {
             document.getElementById("teamDataSet").innerHTML = "No Teams Found"
        
@@ -100,51 +119,8 @@
                 document.getElementById("teamDataSet").innerHTML += "Match Num: " + response[i][1][matchnum] + " | Team Number: " + response[i][1][teamNum] + "<br>" + "autoLowerHub: " + response[i][1][autoLowerHub] + "<br>" + "autoUpperHub: " + response[i][1][autoUpperHub] + "<br>" + "teleLowerHub: " + response[i][1][teleLowerHub] + "<br>" + "teleUpperHub: " + response[i][1][teleUpperHub] + "<br>" + "taxi (Rungs): " + response[i][1][taxi] + "<br>" + "hanger: " + response[i][1][hanger] + "<br>" + "<br>"
               }
 
-            for(var j = 0; j < labelsArray.length; j++){
-              if(labelsArray[j] == response[i][1][teamNum]){
-                response[i][1][autoLowerHub] += autoLowerHubArray[j];
-                response[i][1][autoUpperHub] += autoUpperHubArray[j]
-                response[i][1][teleLowerHub] += teleLowerHubArray[j]
-                response[i][1][teleUpperHub] += teleUpperHubArray[j]  
-                response[i][1][hanger] =  hangerScore[response[i][1][hanger]] + hangerArray[j];
-                response[i][1][taxi] += taxiArray[j];
-                response[i][1][counter] += counterArray[j];
-            
-                
-                autoLowerHubArray.splice(j,1)
-                autoUpperHubArray.splice(j,1)
-                teleLowerHubArray.splice(j,1)
-                teleUpperHubArray.splice(j,1)
-                counterArray.splice(j,1)
-                hangerArray.splice(j,1)
-                taxiArray.splice(j,1)
-                labelsArray.splice(j,1);
-            } 
             }
-                labelsArray.push(response[i][1][teamNum]) 
-                //autoLowerHubArray
-                autoLowerHubArray.push(response[i][1][autoLowerHub])
-                
-                //autoUpperHub
-                autoUpperHubArray.push(response[i][1][autoUpperHub])
-                
-                //teleLowerHubArray
-                
-                teleLowerHubArray.push(response[i][1][teleLowerHub])
-                
-                //teleUpperHubArray
-                
-                teleUpperHubArray.push(response[i][1][teleUpperHub])
-                
-                //hangerArray
-                hangerArray.push(response[i][1][hanger])
-            
-                taxiArray.push(response[i][1][taxi])
-            
-                counterArray.push(response[i][1][counter])
-                
-            }
-      })
+          })
     }
   
     </script>
