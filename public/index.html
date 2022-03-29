@@ -8,11 +8,16 @@
       </head>
       <div class="stform"> 
        
-            <input type="text" id="teamData" name="teamData" placeholder="Enter team name">
-            <button id="btn" onclick="tdata(teamData.value)">Submit</button>
+            <input type="text" id="teamData" name="teamData" placeholder="Enter team number">
+            <button id="btn" onclick="tdata(teamData.value)">Submit Team Number</button>
+      </div>
+      <div class="smform"> 
+       
+        <input type="text" id="matchData" name="matchData" placeholder="Enter match number">
+        <button id="btn" onclick="mdata(matchData.value)">Submit Match Number</button>
       </div>
       <form>
-        <input type="submit" value="Clear">
+        <input type="submit" value="Clear Data">
       </form>
       <div id="teamDataSet"></div>
       <div class="charts">
@@ -26,6 +31,53 @@
         <p>The SSSSSSS (should sound like a dying snake when pronounced properly) is a service provided by First Robotics Challenge team number 5066 "Singularity" from Saline MI. It is a viewer or "see-er" that allows the user to view scouting data collected in the stands by our team. This information is available to anyone patient enough and shows the average points scored by each team and where they score the most points. You can disable any of these subcategories if you only want to look at who the best team is at a smaller selection of point scoring opportunities. This is done by simply clicking on said item at the top of the screen in the key. Hovering your mouse over any of the data will cause it to display its value as a decimal.</p>
       </div>
     </body>
+
+    <!---Match Data Code-->
+    <script>
+    function mdata(matchdata){
+        document.getElementById("teamDataSet").innerHTML = " ";
+        fetch("../js/final.json").then(async (resp) => {
+            let response = await resp.json();
+
+            //ARRAYS DECLARED & INITALIZED
+            let matchteam = [];
+            
+            let teamNum = 0;
+            let autoLowerHub = 1;
+            let autoUpperHub = 2;
+            let teleLowerHub = 3;
+            let teleUpperHub = 4;
+            let hanger = 5;
+            let taxi = 6;
+            let counter = 7;
+            let matchnum = 8;
+          for(var i = 0; i < response.length; i++){
+              if(response[i][1][matchnum] == matchdata){
+                matchteam.push(response[i][1][teamNum])  
+            }
+          }
+            let matchCount = matchteam.length;
+            if(!(matchCount > 0)){
+            document.getElementById("teamDataSet").innerHTML = "No Matches Found"
+            }
+            let teammissed = 6 - matchCount ;
+            if(teammissed >  0){
+              document.getElementById("teamDataSet").innerHTML += "Error: " +  teammissed + " team(s) were not scouted during this match! <br>" + "<br><br><br>"
+            }
+           
+            for(var i = 0; i < response.length; i++){
+              if(response[i][1][matchnum] == matchdata){ 
+                document.getElementById("teamDataSet").innerHTML += "Match Num: " + response[i][1][matchnum] + " | Team Number: " + response[i][1][teamNum] + "<br>" + "autoLowerHub: " + response[i][1][autoLowerHub] + "<br>" + "autoUpperHub: " + response[i][1][autoUpperHub] + "<br>" + "teleLowerHub: " + response[i][1][teleLowerHub] + "<br>" + "teleUpperHub: " + response[i][1][teleUpperHub] + "<br>" + "taxi: " + response[i][1][taxi] + "<br>" + "hanger (Rungs): " + response[i][1][hanger] + "<br>" + "<br>"
+              }
+
+            }
+         
+         
+      })
+  }
+    </script>
+
+    <!--- TEAM DATA CODE-->
     <script>
       
       function tdata(teamValue){
@@ -98,6 +150,7 @@
                   teleupperhubavg += teleUpperHubArray[i];
                   telelowerhubavg += teleLowerHubArray[i];
             }
+
             document.getElementById("teamDataSet").innerHTML = " ";
             document.getElementById("teamDataSet").innerHTML += "<br>Team #: " + teamValue + " |  Total Competition Averages <br> ";
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) None (#0): "  + (hanger0 / matchCount) * 100 + "%<br>"
@@ -117,7 +170,7 @@
             for(var i = 0; i < response.length; i++){
               //LabelArray
               if(response[i][1][teamNum] == teamValue){ 
-                document.getElementById("teamDataSet").innerHTML += "Match Num: " + response[i][1][matchnum] + " | Team Number: " + response[i][1][teamNum] + "<br>" + "autoLowerHub: " + response[i][1][autoLowerHub] + "<br>" + "autoUpperHub: " + response[i][1][autoUpperHub] + "<br>" + "teleLowerHub: " + response[i][1][teleLowerHub] + "<br>" + "teleUpperHub: " + response[i][1][teleUpperHub] + "<br>" + "taxi (Rungs): " + response[i][1][taxi] + "<br>" + "hanger: " + response[i][1][hanger] + "<br>" + "<br>"
+                document.getElementById("teamDataSet").innerHTML += "Match Num: " + response[i][1][matchnum] + " | Team Number: " + response[i][1][teamNum] + "<br>" + "autoLowerHub: " + response[i][1][autoLowerHub] + "<br>" + "autoUpperHub: " + response[i][1][autoUpperHub] + "<br>" + "teleLowerHub: " + response[i][1][teleLowerHub] + "<br>" + "teleUpperHub: " + response[i][1][teleUpperHub] + "<br>" + "taxi: " + response[i][1][taxi] + "<br>" + "hanger (Rungs): " + response[i][1][hanger] + "<br>" + "<br>"
               }
 
             }
