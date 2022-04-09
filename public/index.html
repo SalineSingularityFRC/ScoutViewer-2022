@@ -114,7 +114,6 @@
             let finalnum = 0;
         
             let arrayHangerPercent = [];
-           
           for(var i = 0; i < response.length; i++){
               if(response[i][1][teamNum] == teamValue){
                 arrayHangerPercent.push(response[i][1][hanger])  
@@ -139,7 +138,7 @@
 
             if(matchCount > 0){
 
-            for(var i = 0; i < matchCount-1; i++){
+            for(var i = 0; i < matchCount; i++){
                 if(arrayHangerPercent[i] == 4) hanger4++;
                   else if(arrayHangerPercent[i] == 3) hanger3++;
                   else if(arrayHangerPercent[i] == 2 ) hanger2++
@@ -154,7 +153,7 @@
             }
 
             document.getElementById("teamDataSet").innerHTML = " ";
-            document.getElementById("teamDataSet").innerHTML += "<br>Team #: " + teamValue + " |  Total Competition Averages <br> ";
+            document.getElementById("teamDataSet").innerHTML += "<br>Team #: " + teamValue + " | Total Competition Averages <br> ";
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) None (#0): "  + (hanger0 / matchCount) * 100 + "%<br>"
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Low (#1): " + (hanger1 / matchCount) * 100 + "%<br>"
             document.getElementById("teamDataSet").innerHTML += "Hanger (Percent) Mid (#2): " + (hanger2 / matchCount) * 100 + "%<br>"
